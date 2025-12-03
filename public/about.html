@@ -17,15 +17,15 @@
 
     <style>
         :root {
-            --color-bg-dark: #2C3E50; /* Background */
-            --color-card-dark: #34495E; /* Card Background */
-            --color-nav-dark: #233140; /* Navbar/Footer */
+            --color-bg-dark: #2C3E50;
+            --color-card-dark: #34495E;
+            --color-nav-dark: #233140;
             
-            --color-text-light: #ECF0F1; /* Main text */
-            --color-text-muted: #BDC3C7; /* Muted text */
+            --color-text-light: #ECF0F1;
+            --color-text-muted: #BDC3C7;
 
-            --color-primary-blue: #3498DB; /* Main color */
-            --color-accent-green: #16A085; /* Accent color */
+            --color-primary-blue: #3498DB;
+            --color-accent-green: #16A085;
 
             --color-alert-red: #FF7043;
             
@@ -33,11 +33,57 @@
             --font-data: 'Inconsolata', monospace;
         }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            background-color: var(--color-bg-dark);
+            background: none;
             font-family: var(--font-main);
             color: var(--color-text-light);
             min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(44, 62, 80, 0.75);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .bg-video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            overflow: hidden;
+        }
+
+        .bg-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            min-width: 100vw;
+            min-height: 100vh;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
         }
 
         h2, h3, h4, h5, h6 {
@@ -60,16 +106,35 @@
         .header-bg {
             background: url('images/clouds_by_CHUTTERSNAP_unsplash.avif') no-repeat center center/cover;
             background-position: center bottom;
-            padding: 5rem 0;
+            padding: 3rem 0;
             color: var(--color-text-light);
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             position: relative;
             text-align: center;
+            overflow: hidden;
+        }
+
+        .header-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        .header-bg-overlay {
+            position: relative;
+            z-index: 1;
         }
         
         .header-text-container {
             background-color: rgba(35, 49, 64, 0.85);
-            padding: 1rem 2rem;
+            padding: 0.8rem 1.5rem;
             border-radius: 0.5rem;
             display: inline-block;
             backdrop-filter: blur(5px);
@@ -78,10 +143,14 @@
         .header-bg h1 {
             color: var(--color-primary-blue) !important; 
             text-shadow: none;
+            font-size: 2rem;
+            margin-bottom: 0.3rem;
         }
         .header-bg p {
             color: var(--color-text-light) !important;
             text-shadow: none;
+            font-size: 0.95rem;
+            margin-bottom: 0;
         }
 
         .metric-card {
@@ -172,9 +241,33 @@
             font-size: 2rem;
         }
 
+        .participation-level {
+            background-color: rgba(22, 160, 133, 0.1);
+            border-left: 4px solid var(--color-accent-green);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.5rem;
+        }
+
+        .participation-level h5 {
+            color: var(--color-accent-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .container-lg {
+            max-width: 1000px;
+        }
+
     </style>
 </head>
 <body>
+
+    <!-- Background Video Container -->
+    <div class="bg-video-container">
+        <video class="bg-video" autoplay muted loop>
+            <source src="videos/clouds.mp4" type="video/mp4">
+        </video>
+    </div>
 
     <!-- 1. Navigation Bar --><nav class="navbar navbar-expand-lg navbar-dark navbar-custom py-3 sticky-top">
         <div class="container-fluid container-lg">
@@ -197,11 +290,15 @@
         </div>
     </nav>
 
-    <!-- 2. Header Section with Background Image --><header class="header-bg">
-        <div class="container-fluid container-lg">
+    <!-- 2. Header Section with Background Video --><header class="header-bg">
+        <video class="header-video" autoplay muted loop>
+            <source src="videos/headervid.mp4" type="video/mp4">
+        </video>
+
+        <div class="container-fluid container-lg header-bg-overlay">
             <div class="header-text-container mx-auto">
-                <h1 class="display-5">About TerraPredict</h1>
-                <p class="lead">Sistema de Análisis y Diagnóstico del Entorno Medioambiental</p>
+                <h1 class="display-5">TerraPredict - Sistema A.D.E.M.</h1>
+                <p class="lead">Ciencia Ciudadana para Monitoreo Ambiental</p>
             </div>
         </div>
     </header>
@@ -212,13 +309,19 @@
         <section class="mb-5">
             <h2 class="section-title">Acerca del Proyecto</h2>
             <p class="text-muted-custom mb-3">
-                TerraPredict es una iniciativa global dedicada a monitorear y predecir cambios climáticos utilizando tecnología de última generación. 
-                Nuestro sistema integra sensores embebidos (como Raspberry Pi), análisis de datos en tiempo real y modelos de pronóstico sofisticados 
-                para proporcionar información accesible sobre el estado ambiental de nuestro planeta.
+                <strong>TerraPredict</strong> es un sistema de <strong>Ciencia Ciudadana</strong> que busca empoderar a las comunidades 
+                para la identificación, comprensión y monitoreo de fenómenos socio-ecológicos, a través de tecnología IoT y recursos 
+                pedagógicos enmarcados en una cultura de sostenibilidad.
+            </p>
+            <p class="text-muted-custom mb-3">
+                Inspirado en el modelo <strong>SKILIKET</strong> (Science Knowledge Initiatives for Learning by Innovation: Kit for 
+                Empowerment based on Technology), el <strong>Sistema A.D.E.M.</strong> (Análisis y Diagnóstico del Entorno Medioambiental) 
+                integra sensores embebidos, análisis de datos en tiempo real y modelos predictivos sofisticados para democratizar el 
+                acceso a información climática precisa.
             </p>
             <p class="text-muted-custom">
-                El Sistema A.D.E.M. (Sistema de Análisis y Diagnóstico del Entorno Medioambiental) representa un esfuerzo conjunto para democratizar 
-                el acceso a datos climáticos precisos y facilitar la toma de decisiones informadas a nivel individual y colectivo.
+                Nuestro objetivo es convertir a los ciudadanos en agentes activos de transformación ambiental, permitiéndoles visualizar, 
+                compartir y analizar datos en tiempo real para facilitar la toma de decisiones informadas hacia un futuro más sostenible.
             </p>
         </section>
 
@@ -229,11 +332,12 @@
                 <div class="col-md-6">
                     <div class="feature-box">
                         <div class="feature-icon">
-                            <i class="bi bi-thermometer-half"></i>
+                            <i class="bi bi-cpu"></i>
                         </div>
-                        <h4>Monitoreo en Tiempo Real</h4>
+                        <h4>Tecnología IoT Embebida</h4>
                         <p class="text-muted-custom small mb-0">
-                            Obtén datos actualizados continuamente sobre temperatura, humedad, concentración de CO2 y otros indicadores ambientales críticos.
+                            Dispositivos Raspberry Pi con sensores para recopilar datos ambientales en tiempo real: temperatura, CO2, 
+                            humedad, ruido y radiación UV.
                         </p>
                     </div>
                 </div>
@@ -242,20 +346,22 @@
                         <div class="feature-icon">
                             <i class="bi bi-graph-up-arrow"></i>
                         </div>
-                        <h4>Predicciones Avanzadas</h4>
+                        <h4>Modelos Predictivos Avanzados</h4>
                         <p class="text-muted-custom small mb-0">
-                            Utiliza modelos de machine learning para proyectar tendencias climáticas futuras basadas en trajectórias actuales de emisiones.
+                            Algoritmos de machine learning que analizan tendencias históricas para proyectar comportamientos 
+                            ambientales futuros.
                         </p>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="feature-box">
                         <div class="feature-icon">
-                            <i class="bi bi-geo-alt"></i>
+                            <i class="bi bi-people-fill"></i>
                         </div>
-                        <h4>Datos Localizados</h4>
+                        <h4>Ciencia Ciudadana Participativa</h4>
                         <p class="text-muted-custom small mb-0">
-                            Accede a información climática específica de tu ubicación geográfica utilizando tecnología de geolocalización avanzada.
+                            Empoderamos a comunidades para participar activamente en la recopilación y análisis de datos ambientales, 
+                            independientemente de su formación académica.
                         </p>
                     </div>
                 </div>
@@ -264,38 +370,71 @@
                         <div class="feature-icon">
                             <i class="bi bi-shield-check"></i>
                         </div>
-                        <h4>Datos Confiables</h4>
+                        <h4>Datos Confiables y Transparentes</h4>
                         <p class="text-muted-custom small mb-0">
-                            Alimentados por fuentes verificadas y metodologías científicas rigurosas para garantizar precisión y credibilidad.
+                            Metodologías científicas rigurosas, comparación con APIs externas y validación continua garantizan 
+                            precisión y credibilidad.
                         </p>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Participation Levels Section -->
+        <section class="mb-5">
+            <h2 class="section-title">Niveles de Participación en Ciencia Ciudadana</h2>
+            <p class="text-muted-custom mb-3">
+                Siguiendo el modelo de SKILIKET, TerraPredict permite diferentes niveles de participación ciudadana:
+            </p>
+
+            <div class="participation-level">
+                <h5><i class="bi bi-1-circle me-2"></i>Crowdsourcing (Nivel Básico)</h5>
+                <p class="text-muted-custom small mb-0">
+                    Contribuye con datos observacionales simples a través de la plataforma. Ayuda a la comunidad recopilando 
+                    información sobre fenómenos ambientales en tu localidad.
+                </p>
+            </div>
+
+            <div class="participation-level">
+                <h5><i class="bi bi-2-circle me-2"></i>Análisis Colaborativo</h5>
+                <p class="text-muted-custom small mb-0">
+                    Participa en el análisis de muestras y datos. Ayuda a interpretar resultados, contribuir análisis y difundir hallazgos 
+                    con tu comunidad.
+                </p>
+            </div>
+
+            <div class="participation-level">
+                <h5><i class="bi bi-3-circle me-2"></i>Co-creación (Investigación Avanzada)</h5>
+                <p class="text-muted-custom small mb-0">
+                    Colabora en todas las etapas del proyecto: definición de preguntas, desarrollo de hipótesis, análisis profundo y 
+                    respuesta a nuevas preguntas de investigación.
+                </p>
+            </div>
+        </section>
+
         <!-- Technology Stack Section -->
         <section class="mb-5">
-            <h2 class="section-title">Tecnología Utilizada</h2>
+            <h2 class="section-title">Stack Tecnológico</h2>
             <div class="row">
                 <div class="col-md-4">
                     <div class="metric-card p-3 text-center mb-3">
                         <i class="bi bi-cpu" style="color: var(--color-primary-blue); font-size: 2rem; margin-bottom: 0.5rem;"></i>
-                        <h5>Raspberry Pi</h5>
-                        <p class="text-muted-custom small mb-0">Servidores embebidos para procesamiento local de datos ambientales.</p>
+                        <h5>Raspberry Pi + Sensores</h5>
+                        <p class="text-muted-custom small mb-0">Recopilación de datos ambientales en tiempo real desde dispositivos embebidos.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="metric-card p-3 text-center mb-3">
                         <i class="bi bi-cloud-check" style="color: var(--color-primary-blue); font-size: 2rem; margin-bottom: 0.5rem;"></i>
-                        <h5>Firebase</h5>
-                        <p class="text-muted-custom small mb-0">Hosting en la nube y base de datos en tiempo real para escalabilidad global.</p>
+                        <h5>Firebase + APIs</h5>
+                        <p class="text-muted-custom small mb-0">Hosting en la nube, almacenamiento de datos y integración con servicios externos.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="metric-card p-3 text-center mb-3">
-                        <i class="bi bi-code-slash" style="color: var(--color-primary-blue); font-size: 2rem; margin-bottom: 0.5rem;"></i>
-                        <h5>API Moderna</h5>
-                        <p class="text-muted-custom small mb-0">Integración con servicios externos y modelos de IA para análisis predictivos.</p>
+                        <i class="bi bi-graph-up" style="color: var(--color-primary-blue); font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                        <h5>Machine Learning</h5>
+                        <p class="text-muted-custom small mb-0">Modelos predictivos para análisis de tendencias y proyecciones futuras.</p>
                     </div>
                 </div>
             </div>
@@ -308,80 +447,56 @@
                 <ul class="list-unstyled text-muted-custom">
                     <li class="mb-2">
                         <i class="bi bi-check-circle" style="color: var(--color-accent-green);"></i> 
-                        <strong>Sensores Locales:</strong> Redes de dispositivos Raspberry Pi distribuidos globalmente.
+                        <strong>Sensores Locales:</strong> Red de dispositivos Raspberry Pi distribuidos en diferentes ubicaciones.
                     </li>
                     <li class="mb-2">
                         <i class="bi bi-check-circle" style="color: var(--color-accent-green);"></i> 
-                        <strong>Datos Satelitales:</strong> Información de agencias espaciales y organizaciones de monitoreo ambiental.
+                        <strong>APIs Meteorológicas:</strong> Open-Meteo y otras plataformas para validación de datos externos.
                     </li>
                     <li class="mb-2">
                         <i class="bi bi-check-circle" style="color: var(--color-accent-green);"></i> 
-                        <strong>APIs Meteorológicas:</strong> Integración con servicios de pronóstico meteorológico en tiempo real.
+                        <strong>Bases de Datos Históricas:</strong> Análisis de tendencias a largo plazo para validación de modelos predictivos.
                     </li>
                     <li class="mb-2">
                         <i class="bi bi-check-circle" style="color: var(--color-accent-green);"></i> 
-                        <strong>Bases de Datos Históricas:</strong> Análisis de tendencias a largo plazo para validación de modelos.
+                        <strong>Observaciones Cualitativas:</strong> Reportes ciudadanos sobre fenómenos ambientales y socio-ecológicos.
                     </li>
                     <li>
                         <i class="bi bi-check-circle" style="color: var(--color-accent-green);"></i> 
-                        <strong>Investigación Científica:</strong> Colaboración con instituciones académicas y centros de investigación.
+                        <strong>Investigación Colaborativa:</strong> Trabajo conjunto con instituciones académicas y centros de investigación.
                     </li>
                 </ul>
             </div>
         </section>
 
-        <!-- Team Section -->
-        <section class="mb-5">
-            <h2 class="section-title">Nuestro Equipo</h2>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="team-card">
-                        <div class="team-avatar">
-                            <i class="bi bi-person-circle"></i>
-                        </div>
-                        <h5 style="color: var(--color-primary-blue);">Desarrollo e Ingeniería</h5>
-                        <p class="text-muted-custom small mb-0">Expertos en sistemas embebidos, backend y desarrollo web moderno.</p>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="team-card">
-                        <div class="team-avatar">
-                            <i class="bi bi-graph-up"></i>
-                        </div>
-                        <h5 style="color: var(--color-primary-blue);">Análisis de Datos</h5>
-                        <p class="text-muted-custom small mb-0">Científicos de datos especializados en modelado climático y predicción.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Mission Section -->
+        <!-- Our Mission Section -->
         <section class="mb-5">
             <h2 class="section-title">Nuestra Misión</h2>
             <div class="metric-card p-4">
                 <p class="text-muted-custom mb-3">
                     <i class="bi bi-target" style="color: var(--color-accent-green); font-size: 1.5rem; margin-right: 0.5rem;"></i>
-                    <strong>Democratizar el Acceso a Información Climática:</strong> Creemos que todos deberían tener acceso a datos ambientales precisos y actualizados, 
-                    independientemente de su ubicación geográfica o recursos económicos.
+                    <strong>Democratizar el Acceso a Información Ambiental:</strong> Creemos que todos deberían tener acceso a datos 
+                    ambientales precisos y actualizados, fomentando una cultura de conciencia ecológica.
                 </p>
                 <p class="text-muted-custom mb-3">
                     <i class="bi bi-lightning" style="color: var(--color-accent-green); font-size: 1.5rem; margin-right: 0.5rem;"></i>
-                    <strong>Impulsar la Acción Climática:</strong> Proporcionamos herramientas y datos para que individuos, comunidades y organizaciones 
-                    tomen decisiones informadas sobre sostenibilidad ambiental.
+                    <strong>Empoderar Ciudadanos como Científicos:</strong> Convertimos a individuos en agentes activos de investigación, 
+                    desarrollando competencias en literacia de datos y resolución de problemas.
                 </p>
                 <p class="text-muted-custom">
                     <i class="bi bi-globe-americas" style="color: var(--color-accent-green); font-size: 1.5rem; margin-right: 0.5rem;"></i>
-                    <strong>Contribuir a la Solución Climática Global:</strong> Nuestro objetivo es ser parte de la red global de monitoreo ambiental 
-                    que facilite la implementación de políticas de reducción de carbono y remediación climática.
+                    <strong>Contribuir a la Solución Climática Global:</strong> Ser parte de la red global de monitoreo ambiental que 
+                    facilite políticas de reducción de carbono y remediación climática sostenible.
                 </p>
             </div>
         </section>
 
         <!-- Call to Action -->
         <section class="text-center mb-5">
-            <h2 class="section-title" style="border-left: none; margin-left: 0; padding-left: 0;">¿Quieres Saber Más?</h2>
+            <h2 class="section-title" style="border-left: none; margin-left: 0; padding-left: 0;">¿Quieres ser parte del cambio?</h2>
             <p class="text-muted-custom mb-4">
-                Regresa a la página principal para ver datos en tiempo real y predicciones climáticas.
+                Regresa a la página principal para ver datos en tiempo real, predicciones climáticas y únete al movimiento de 
+                ciencia ciudadana para monitoreo ambiental.
             </p>
             <a href="index.html" class="btn btn-custom-primary btn-lg">
                 <i class="bi bi-arrow-left me-2"></i>Volver al Inicio
@@ -393,7 +508,7 @@
     <!-- 3. Footer --><footer class="mt-5 py-4 navbar-custom text-white">
         <div class="container-fluid container-lg text-center">
             <p class="mb-0 small" style="color: var(--color-text-light);">
-                &copy; 2025 TerraPredict | Climate Monitoring Project.
+                &copy; 2025 TerraPredict | Sistema A.D.E.M. - Ciencia Ciudadana para Monitoreo Ambiental.
             </p>
         </div>
     </footer>
